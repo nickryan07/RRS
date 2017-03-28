@@ -19,12 +19,25 @@ protected:
 
 class Head : public Robot_parts {
 
+public:
+    Head(double _power, string name, int model_num, string description, double cost)
+    : Robot_parts(name, model_num, description, cost)
+    {
+        power = _power;
+    }
+
 private:
     double power;
 };
 
 class Arm : public Robot_parts {
 
+public:
+    Arm(double _arm_power, string name, int model_num, string description, double cost)
+    : Robot_parts(name, model_num, description, cost)
+    {
+        arm_power = _arm_power;
+    }
 private:
     double arm_power;
 };
