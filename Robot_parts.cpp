@@ -4,7 +4,23 @@
 
 using namespace std;
 
-class Robot_parts {
+class Robot_models {
+
+public:
+    double cost()
+    {
+    }
+    double max_speed()
+    {
+    }
+    double battery_life()
+    {
+    }
+
+};
+
+class Robot_parts : public Robot_models {
+
 public:
     Robot_parts(string name, int model_num, string description, double cost)
      : name{name}, model_num{model_num}, description{description}, cost{cost} { };
