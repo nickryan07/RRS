@@ -58,9 +58,15 @@ public:
     {
         battery_slots = _battery_slots;
         num_arms = _num_arms;
+        this_cost = cost;
+    }
+
+    double cost() {
+        return this_cost;
     }
 
 private:
+    int this_cost;
     int battery_slots;
     int num_arms;
 };
@@ -93,21 +99,33 @@ private:
     double max_power;
 };
 
-class Robot_models : public Robot_parts {
+class Robot_models {
 
 public:
+    Robot_models(string name, int model_num, double price, Robot_parts torso, Robot_parts motor,
+     Robot_parts arm, Robot_parts battery, Robot_parts head)
+    : name{name}, model_num{model_num}, price{price}, torso{torso}, motor{motor},
+     arm{arm}, battery{battery}, head{head} { }
+
     double cost()
     {
+        return price;//TODO
+    }
+    string get_name() {
+        return name;
     }
     double max_speed()
     {
+        //TODO
     }
     double battery_life()
     {
+        //TODO
     }
 private:
     string name;
     int model_num;
+    double price;
     Robot_parts torso;
     Robot_parts motor;
     Robot_parts arm;
@@ -213,6 +231,7 @@ int main() {
             for(int i = 0; i < batteries.size(); i++) {
                 cout << "(" << i << ")\t" << "Name: " << batteries[i].get_name() << "\tCost: " << batteries[i].get_cost() << endl;
             }
+            int t,h,b,m,a; //torso head battery motor arm
             cout << "\n------ Creating a Robot Model ------\n\n" << endl;
       	    cout << "Enter a model name (one word): ";
       	    cin >> name;
@@ -220,6 +239,25 @@ int main() {
       	    cin >> model_number;
       	    cout << "Enter the model's price (double): ";
       	    cin >> price;
+            cout << "Enter the index number of the torso you wish to use (int): ";
+            cin >> t;
+            cout << "Enter the index number of the head you wish to use (int): ";
+            cin >> h;
+            cout << "Enter the index number of the battery you wish to use (int): ";
+            cin >> b;
+            cout << "Enter the index number of the motor you wish to use (int): ";
+            cin >> m;
+            cout << "Enter the index number of the arms you wish to use (int): ";
+            cin >> a;
+            Robot_models *mod = new Robot_models(model_name, model_number, price, torsos[t],
+                motors[m], arms[a], batteries[b], heads[h]);
+            models.push_back(*mod);
+        } else if (command == 3) {
+            cout << "\n--------- MODELS ---------\n" << endl;
+            for(int i = 0; i < models.size(); i++) {
+                cout << "(" << i << ")\t" << "Name: " << models[i].get_name() << "\tPrice: " << models[i].cost() << endl;
+            }
+            cout << "\n--------- MODELS ---------\n" << endl;
         } else if (command == 0) {
             break;
         }
