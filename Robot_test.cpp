@@ -2,6 +2,7 @@
 #include "Robot_parts.h"
 #include "Utils.h"
 #include "Customer.h"
+#include "Sales_associate.h"
 
 using namespace std;
 
@@ -9,6 +10,7 @@ int main() {
     string type, name, description;
     int part_num, command;
     double cost;
+    //TODO : Move vector locations -> model class, shop class
     vector<Torso> torsos;
     vector<Motor> motors;
     vector<Arm> arms;
@@ -16,7 +18,7 @@ int main() {
     vector<Battery> batteries;
     vector<Robot_models> models;
     vector<Customer> customers;
-    //TODO : vector<SALES_ASSOCIATES> associates;
+    vector<Sales_associate> associates;
     while(true) {
 	    cout << "------ Main Menu ------ " << endl;
 	    cout << "(1) Create new parts." << endl;
@@ -117,9 +119,15 @@ int main() {
                 get_int("Enter the customer number: ")
             );
             customers.push_back(*customer);
+            cout << "------ Successfully created a new Customer ------\n\n" << endl;
         } else if (command == 5) {
-            //TODO
-            break;
+            cout << "\n------ Adding a new Sales Associate ------\n\n" << endl;
+            Sales_associate *associate = new Sales_associate(
+                get_full_line("Enter the employee's name: "),
+                get_int("Enter the employee number: ")
+            );
+            associates.push_back(*associate);
+            cout << "------ Successfully created a new Sales Associate ------\n\n" << endl;
         } else if (command == 0) {
             break;
         }
