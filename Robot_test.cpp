@@ -4,8 +4,6 @@
 
 using namespace std;
 
-//TODO : Refactor using utils methods
-
 int main() {
     string type, name, description;
     int part_num, command;
@@ -16,68 +14,52 @@ int main() {
     vector<Battery> batteries;
     vector<Robot_models> models;
     double cost;
-    string model_name;
-    int model_number;
-    double price;
     while(true) {
 	    cout << "------ Main Menu ------ " << endl;
 	    cout << "(1) Create new parts." << endl;
 	    cout << "(2) Define new models." << endl;
         cout << "(3) Browse existing models." << endl;
         cout << "(0) Quit." << endl;
-        cout << "Enter command: ";
-	    cin >> command;
+        command = get_int("Enter command: ");
         if (command != 1 && command != 2 && command != 3 && command != 0)
             continue;
         if (command == 1) {
       	    cout << "---- Creating a robot part ----" << endl;
-      	    cout << "Enter a part name (one word): ";
-      	    cin >> name;
-      	    cout << "Enter a part num (int): ";
-      	    cin >> part_num;
-      	    cout << "Enter the part's cost (double): ";
-      	    cin >> cost;
-      	    cout << "Enter a part description (one word): ";
-      	    cin >> description;
-      	    cout << "Specify type (Head, Arm, Torso, Battery, Motor): ";
-      	    cin >> type;
+            name = get_full_line("Enter a part name: ");
+            part_num = get_int("Enter a part number (int): ");
+            cost = get_double("Enter the part's cost (double): ");
+            description = get_full_line("Enter a part description: ");
+            type = get_full_line("Specify part type (Head, Arm, Torso, Battery, Motor): ");
       	    if(type == "Torso" || type == "torso") {
-            	int slots, arms;
-            	cout << "Enter num battery slots: ";
-            	cin >> slots;
-            	cout << "Enter num of arms: ";
-            	cin >> arms;
-            	Torso *t = new Torso(slots, arms, name, part_num, description, cost);
+            	Torso *t = new Torso(
+                    get_int_range("Enter number of battery slots (1 to 3): ", 1, 3),
+                    get_int_range("Enter number of arms (0 to 2): ", 0, 2),
+                    name, part_num, description, cost);
                 torsos.push_back(*t);
             	cout << "Created new torso part named "<< name << endl;
     	    } else if(type == "Head" || type == "head") {
-        		double power;
-        		cout << "Enter power: ";
-        		cin >> power;
-        		Head *h = new Head(power, name, part_num, description, cost);
+        		Head *h = new Head(
+                    get_double("Enter the head's power: "),
+                    name, part_num, description, cost);
                 heads.push_back(*h);
         		cout << "Created new head part named "<< name << endl;
     	    } else if(type == "Arm" || type == "arm") {
-        		double arm_power;
-        		cout << "Enter arm power: ";
-        		cin >> arm_power;
-        		Arm *a = new Arm(arm_power, name, part_num, description, cost);
+        		Arm *a = new Arm(
+                    get_double("Enter max arm power: "),
+                    name, part_num, description, cost);
                 arms.push_back(*a);
         		cout << "Created new arm part named "<< name << endl;
     	    } else if(type == "Motor" || type == "motor") {
-        		double max_power;
-        		cout << "Enter power: ";
-        		cin >> max_power;
-        		Motor *m = new Motor(max_power, name, part_num, description, cost);
+        		Motor *m = new Motor(
+                    get_double("Enter the max power: "),
+                    name, part_num, description, cost);
                 motors.push_back(*m);
         		cout << "Created new motor part named "<< name << endl;
     	    } else if(type == "Battery" || type == "battery") {
-        		double power_ava, max_energy;
-        		cout << "Enter available power: ";
-        		cin >> power_ava;
-        		cout << "Enter max energy: ";
-        		cin >> max_energy;
-        		Battery *b = new Battery(power_ava, max_energy, name, part_num, description, cost);
+        		Battery *b = new Battery(
+                    get_double("Enter available power: "),
+                    get_double("Enter max energy: "),
+                    name, part_num, description, cost);
                 batteries.push_back(*b);
         		cout << "Created new battery part named "<< name << endl;
     	    }
@@ -103,26 +85,17 @@ int main() {
             for(int i = 0; i < batteries.size(); i++) {
                 cout << "(" << i << ")\t" << "Name: " << batteries[i].get_name() << "\tCost: " << batteries[i].get_cost() << endl;
             }
-            int t,h,b,m,a; //torso head battery motor arm
             cout << "\n------ Creating a Robot Model ------\n\n" << endl;
-      	    cout << "Enter a model name (one word): ";
-      	    cin >> name;
-      	    cout << "Enter a part num (int): ";
-      	    cin >> model_number;
-      	    cout << "Enter the model's price (double): ";
-      	    cin >> price;
-            cout << "Enter the index number of the torso you wish to use (int): ";
-            cin >> t;
-            cout << "Enter the index number of the head you wish to use (int): ";
-            cin >> h;
-            cout << "Enter the index number of the battery you wish to use (int): ";
-            cin >> b;
-            cout << "Enter the index number of the motor you wish to use (int): ";
-            cin >> m;
-            cout << "Enter the index number of the arms you wish to use (int): ";
-            cin >> a;
-            Robot_models *mod = new Robot_models(model_name, model_number, price, torsos[t],
-                motors[m], arms[a], batteries[b], heads[h]);
+            Robot_models *mod = new Robot_models(
+                get_full_line("Enter a model name: "),
+                get_int("Enter a model number (int): "),
+                get_double("Enter the model's price (double): "),
+                torsos[get_int("Enter the index number of the torso you wish to use (int): ")],
+                motors[get_int("Enter the index number of the motor you wish to use (int): ")],
+                arms[get_int("Enter the index number of the arm(s) you wish to use (int): ")],
+                batteries[get_int("Enter the index number of the battery you wish to use (int): ")],
+                heads[get_int("Enter the index number of the head you wish to use (int): ")]
+            );
             models.push_back(*mod);
         } else if (command == 3) {
             cout << "\n--------- MODELS ---------\n" << endl;
