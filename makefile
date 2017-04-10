@@ -7,7 +7,7 @@ debug: CXXFLAGS += -g
 debug: Robot_parts.o
 
 
-main: Robot_parts.h Utils.h Customer.h Sales_associate.h Robot_test.cpp
+main: Robot_parts.h Utils.h Customer.h Sales_associate.h Order.h Robot_test.cpp
 	$(CXX) $(CXXFLAGS) Robot_test.cpp
 
 clean:
