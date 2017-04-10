@@ -1,27 +1,32 @@
 #include <iostream>
 #include "Robot_parts.h"
 #include "Utils.h"
+#include "Customer.h"
 
 using namespace std;
 
 int main() {
     string type, name, description;
     int part_num, command;
+    double cost;
     vector<Torso> torsos;
     vector<Motor> motors;
     vector<Arm> arms;
     vector<Head> heads;
     vector<Battery> batteries;
     vector<Robot_models> models;
-    double cost;
+    vector<Customer> customers;
+    //TODO : vector<SALES_ASSOCIATES> associates;
     while(true) {
 	    cout << "------ Main Menu ------ " << endl;
 	    cout << "(1) Create new parts." << endl;
 	    cout << "(2) Define new models." << endl;
         cout << "(3) Browse existing models." << endl;
+        cout << "(4) Add a new Customer." << endl;
+        cout << "(5) Add a new Sales Associate." << endl;
         cout << "(0) Quit." << endl;
         command = get_int("Enter command: ");
-        if (command != 1 && command != 2 && command != 3 && command != 0)
+        if (command > 5 || command < 0)
             continue;
         if (command == 1) {
       	    cout << "---- Creating a robot part ----" << endl;
@@ -103,6 +108,18 @@ int main() {
                cout << "(" << i << ")\t" << "Name: " << models[i].get_name() << "\tPrice: " << models[i].cost() << endl;
             }
             cout << "\n--------- MODELS ---------\n" << endl;
+        } else if (command == 4) {
+            cout << "\n------ Adding a new Customer ------\n\n" << endl;
+            Customer *customer = new Customer(
+                get_full_line("Enter the customer's name: "),
+                get_full_line("Enter the customer's phone number: "),
+                get_full_line("Enter the customer's email address: "),
+                get_int("Enter the customer number: ")
+            );
+            customers.push_back(*customer);
+        } else if (command == 5) {
+            //TODO
+            break;
         } else if (command == 0) {
             break;
         }
