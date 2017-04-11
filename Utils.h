@@ -59,5 +59,33 @@ double get_double(string input) {
         cerr << "### Not a number!" << endl;
     }
 }
+/* INPUT/OUTPUT STREAMING METHODS */
+void str_clear(ifstream& is) {
+    if (cin.fail()) {
+        cin.clear();
+    }
+    cin.ignore(INT_MAX, '\n');
+}
+
+string get_full_line(ifstream& is) {
+    string output = "";
+    getline(is, output);
+    return output;
+}
+
+int get_int(ifstream& is) {
+    int output = 0;
+    is >> output;
+    str_clear(is);
+    return output;
+}
+
+double get_double(ifstream& is) {
+    double output = 0.0;
+    is >> output;
+    str_clear(is);
+    return output;
+}
+
 
 #endif

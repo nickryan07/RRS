@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -33,7 +34,21 @@ public:
     {
         power = _power;
     }
-
+    double get_power () {
+        return power;
+    }
+    void save() {
+        filebuf f;
+        f.open("data.txt", ios::app);
+        ostream ost(&f);
+        ost << "#Head" << endl;
+        ost << name << endl;
+        ost << model_num << endl;
+        ost << description << endl;
+        ost << cost << endl;
+        ost << power << endl;
+        f.close();
+    }
 private:
     double power;
 };
@@ -45,6 +60,18 @@ public:
     : Robot_parts(name, model_num, description, cost)
     {
         arm_power = _arm_power;
+    }
+    void save() {
+        filebuf f;
+        f.open("data.txt", ios::app);
+        ostream ost(&f);
+        ost << "#Arm" << endl;
+        ost << name << endl;
+        ost << model_num << endl;
+        ost << description << endl;
+        ost << cost << endl;
+        ost << arm_power << endl;
+        f.close();
     }
 private:
     double arm_power;
@@ -65,6 +92,20 @@ public:
         return this_cost;
     }
 
+    void save() {
+        filebuf f;
+        f.open("data.txt", ios::app);
+        ostream ost(&f);
+        ost << "#Torso" << endl;
+        ost << name << endl;
+        ost << model_num << endl;
+        ost << description << endl;
+        ost << this_cost << endl;
+        ost << battery_slots << endl;
+        ost << num_arms << endl;
+        f.close();
+    }
+
 private:
     int this_cost;
     int battery_slots;
@@ -81,6 +122,20 @@ public:
         max_energy = _max_energy;
     }
 
+    void save() {
+        filebuf f;
+        f.open("data.txt", ios::app);
+        ostream ost(&f);
+        ost << "#Battery" << endl;
+        ost << name << endl;
+        ost << model_num << endl;
+        ost << description << endl;
+        ost << cost << endl;
+        ost << power_available << endl;
+        ost << max_energy << endl;
+        f.close();
+    }
+
 private:
     double power_available;
     double max_energy;
@@ -93,6 +148,19 @@ public:
     : Robot_parts(name, model_num, description, cost)
     {
         max_power = _max_power;
+    }
+
+    void save() {
+        filebuf f;
+        f.open("data.txt", ios::app);
+        ostream ost(&f);
+        ost << "#Motor" << endl;
+        ost << name << endl;
+        ost << model_num << endl;
+        ost << description << endl;
+        ost << cost << endl;
+        ost << max_power << endl;
+        f.close();
     }
 
 private:

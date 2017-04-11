@@ -9,8 +9,8 @@ class Order {
 public:
     Order(int order_num, int _status, string _date,
             Customer _customer, Sales_associate associate, Robot_models model)
-        : name{_name}, phone_number{phone_num}, email_address{email},
-        customer_number{customer_num} { };
+        : order_number{order_num}, status{_status}, date{_date},
+        customer{_customer}, sales_associate{associate}, robot_model{model} { };
 
     double robot_cost() {
         //TODO
@@ -26,5 +26,5 @@ private:
     string date;
     Customer customer;
     Sales_associate sales_associate;
-    Robot_models robot_models;
+    Robot_models robot_model;
 };

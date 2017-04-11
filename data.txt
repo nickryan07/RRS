@@ -1,0 +1,38 @@
+#Head
+Blue Robo 2000
+44
+Blue Robo 2000 head
+35.99
+40
+#Head
+Red Robo 2000
+34
+A red robo 2000 variant
+34.44
+42
+#Torso
+Torso 2000
+1
+Robo 2000 standard torso component
+29
+3
+2
+#Arm
+Robo 2000 Arm
+56
+Robo 2000 standard arm component
+12.99
+25
+#Battery
+DC 145 Battery
+5677
+DC 145 battery
+2.49
+120
+60
+#Motor
+Robo 2000 Motor
+45453
+Compatible with all Robo 2000 variants
+24.99
+75

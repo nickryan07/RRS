@@ -1,8 +1,11 @@
 #include <iostream>
+#include <fstream>
+
 #include "Robot_parts.h"
 #include "Utils.h"
 #include "Customer.h"
 #include "Sales_associate.h"
+#include "Order.h"
 
 using namespace std;
 
@@ -19,6 +22,89 @@ int main() {
     vector<Robot_models> models;
     vector<Customer> customers;
     vector<Sales_associate> associates;
+    vector<Order> orders;
+    string path = "data.txt";
+    ifstream file;
+    file.open(path, ios::in);
+    string s1;
+    if(file.is_open() != true) {
+        cerr << "### Error opening input file:" << path << "..exiting\n";
+        return 0;
+    }
+    while(!file.eof()) {
+        getline(file, s1);
+        cout << s1 << endl;
+        if(s1 == "#Head") {
+            double pow;
+            getline(file, name);
+            file >> part_num;
+            file.ignore();
+            getline(file, description);
+            file >> cost;
+            file.ignore();
+            file >> pow;
+            file.ignore();
+            Head *h = new Head(
+                pow, name, part_num, description, cost);
+            heads.push_back(*h);
+        } else if(s1 == "#Arm") {
+            double apow;
+            getline(file, name);
+            file >> part_num;
+            file.ignore();
+            getline(file, description);
+            file >> cost;
+            file.ignore();
+            file >> apow;
+            file.ignore();
+            Arm *a = new Arm(
+                apow, name, part_num, description, cost);
+            arms.push_back(*a);
+        } else if(s1 == "#Torso") {
+            int slots, arms;
+            getline(file, name);
+            file >> part_num;
+            file.ignore();
+            getline(file, description);
+            file >> cost;
+            file.ignore();
+            file >> slots;
+            file.ignore();
+            file >> arms;
+            file.ignore();
+            Torso *t = new Torso(
+                slots, arms, name, part_num, description, cost);
+            torsos.push_back(*t);
+        } else if(s1 == "#Battery") {
+            double avpow, maxe;
+            getline(file, name);
+            file >> part_num;
+            file.ignore();
+            getline(file, description);
+            file >> cost;
+            file.ignore();
+            file >> avpow;
+            file.ignore();
+            file >> maxe;
+            file.ignore();
+            Battery *b = new Battery(
+                avpow, maxe, name, part_num, description, cost);
+            batteries.push_back(*b);
+        } else if(s1 == "#Motor") {
+            double maxpow;
+            getline(file, name);
+            file >> part_num;
+            file.ignore();
+            getline(file, description);
+            file >> cost;
+            file.ignore();
+            file >> maxpow;
+            file.ignore();
+            Motor *m = new Motor(
+                maxpow, name, part_num, description, cost);
+            motors.push_back(*m);
+        }
+    }
     while(true) {
 	    cout << "------ Main Menu ------ " << endl;
 	    cout << "(1) Create new parts." << endl;
@@ -26,9 +112,10 @@ int main() {
         cout << "(3) Browse existing models." << endl;
         cout << "(4) Add a new Customer." << endl;
         cout << "(5) Add a new Sales Associate." << endl;
+        cout << "(6) Create a new order." << endl;
         cout << "(0) Quit." << endl;
         command = get_int("Enter command: ");
-        if (command > 5 || command < 0)
+        if (command > 6 || command < 0)
             continue;
         if (command == 1) {
       	    cout << "---- Creating a robot part ----" << endl;
@@ -43,24 +130,28 @@ int main() {
                     get_int_range("Enter number of arms (0 to 2): ", 0, 2),
                     name, part_num, description, cost);
                 torsos.push_back(*t);
+                t->save();
             	cout << "Created new torso part named "<< name << endl;
     	    } else if(type == "Head" || type == "head") {
         		Head *h = new Head(
                     get_double("Enter the head's power: "),
                     name, part_num, description, cost);
                 heads.push_back(*h);
+                h->save();
         		cout << "Created new head part named "<< name << endl;
     	    } else if(type == "Arm" || type == "arm") {
         		Arm *a = new Arm(
                     get_double("Enter max arm power: "),
                     name, part_num, description, cost);
                 arms.push_back(*a);
+                a->save();
         		cout << "Created new arm part named "<< name << endl;
     	    } else if(type == "Motor" || type == "motor") {
         		Motor *m = new Motor(
                     get_double("Enter the max power: "),
                     name, part_num, description, cost);
                 motors.push_back(*m);
+                m->save();
         		cout << "Created new motor part named "<< name << endl;
     	    } else if(type == "Battery" || type == "battery") {
         		Battery *b = new Battery(
@@ -68,6 +159,7 @@ int main() {
                     get_double("Enter max energy: "),
                     name, part_num, description, cost);
                 batteries.push_back(*b);
+                b->save();
         		cout << "Created new battery part named "<< name << endl;
     	    }
         } else if (command == 2) {
@@ -128,6 +220,18 @@ int main() {
             );
             associates.push_back(*associate);
             cout << "------ Successfully created a new Sales Associate ------\n\n" << endl;
+        } else if (command == 6) {
+            cout << "\n------ Creating a new Order ------\n\n" << endl;
+            Order *order = new Order(
+                get_int("Enter the Order number: "),
+                get_int("Enter the Order Status: "),
+                get_full_line("Enter the Order date: "),
+                customers[get_int("Enter the index number of the customer: ")],
+                associates[get_int("Enter the index number of the sales associate: ")],
+                models[get_int("Enter the index number of the model: ")]
+            );
+            orders.push_back(*order);
+            cout << "------ Successfully created a new Order ------\n\n" << endl;
         } else if (command == 0) {
             break;
         }
