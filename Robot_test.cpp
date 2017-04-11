@@ -13,7 +13,7 @@ int main() {
     string type, name, description;
     int part_num, command;
     double cost;
-    //TODO : Move vector locations -> model class, shop class
+    //TODO : Introduce Shop class; Move vector locations -> model class, shop class
     vector<Torso> torsos;
     vector<Motor> motors;
     vector<Arm> arms;
@@ -33,7 +33,7 @@ int main() {
     }
     while(!file.eof()) {
         getline(file, s1);
-        cout << s1 << endl;
+        //cout << s1 << endl; Helpful to visualize each input block
         if(s1 == "#Head") {
             double pow;
             getline(file, name);
@@ -103,6 +103,26 @@ int main() {
             Motor *m = new Motor(
                 maxpow, name, part_num, description, cost);
             motors.push_back(*m);
+        } else if(s1 == "#Customer") {
+            int cnum;
+            string nm, email, phone;
+            getline(file, nm);
+            getline(file, phone);
+            getline(file, email);
+            file >> cnum;
+            file.ignore();
+            Customer *c = new Customer(
+                nm, phone, email, cnum);
+            customers.push_back(*c);
+        } else if(s1 == "#Associate") {
+            int employee_num;
+            string nm;
+            getline(file, nm);
+            file >> employee_num;
+            file.ignore();
+            Sales_associate *s = new Sales_associate(
+                nm, employee_num);
+            associates.push_back(*s);
         }
     }
     while(true) {
@@ -113,9 +133,11 @@ int main() {
         cout << "(4) Add a new Customer." << endl;
         cout << "(5) Add a new Sales Associate." << endl;
         cout << "(6) Create a new order." << endl;
+        cout << "(7) List current Customers." << endl;
+        cout << "(8) List current Sales Associates." << endl;
         cout << "(0) Quit." << endl;
         command = get_int("Enter command: ");
-        if (command > 6 || command < 0)
+        if (command > 8 || command < 0)
             continue;
         if (command == 1) {
       	    cout << "---- Creating a robot part ----" << endl;
@@ -211,6 +233,7 @@ int main() {
                 get_int("Enter the customer number: ")
             );
             customers.push_back(*customer);
+            customer->save();
             cout << "------ Successfully created a new Customer ------\n\n" << endl;
         } else if (command == 5) {
             cout << "\n------ Adding a new Sales Associate ------\n\n" << endl;
@@ -219,6 +242,7 @@ int main() {
                 get_int("Enter the employee number: ")
             );
             associates.push_back(*associate);
+            associate->save();
             cout << "------ Successfully created a new Sales Associate ------\n\n" << endl;
         } else if (command == 6) {
             cout << "\n------ Creating a new Order ------\n\n" << endl;
@@ -232,6 +256,18 @@ int main() {
             );
             orders.push_back(*order);
             cout << "------ Successfully created a new Order ------\n\n" << endl;
+        } else if (command == 7) {
+            cout << "\n--------- CUSTOMERS ---------\n" << endl;
+            for(int i = 0; i < customers.size(); i++) {
+               cout << "(" << i << ")\t" << "Name: " << customers[i].get_name() << endl;
+            }
+            cout << "\n--------- CUSTOMERS ---------\n" << endl;
+        } else if (command == 8) {
+            cout << "\n--------- SALES ASSOCIATES ---------\n" << endl;
+            for(int i = 0; i < associates.size(); i++) {
+               cout << "(" << i << ")\t" << "Name: " << associates[i].get_name() << "\tEmployee Number: " << associates[i].get_employee_number() << endl;
+            }
+            cout << "\n--------- SALES ASSOCIATES ---------\n" << endl;
         } else if (command == 0) {
             break;
         }

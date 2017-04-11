@@ -36,3 +36,14 @@ Robo 2000 Motor
 Compatible with all Robo 2000 variants
 24.99
 75
+#Associate
+John Doe
+17
+#Customer
+James Doe
+817-999-9999
+jim1234@something.com
+7
+#Associate
+Jane Doe
+21
