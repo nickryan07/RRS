@@ -6,6 +6,17 @@
 #include "Customer.h"
 #include "Sales_associate.h"
 #include "Order.h"
+#include "Create_part.h"
+
+#include <FL/Fl.H>
+#include <FL/Fl_Menu_Bar.H>
+#include <FL/Fl_Window.H>
+#include <FL/Fl_Input.H>
+#include <Fl/Fl_Text_Display.H>
+#include <FL/Fl_Multiline_Input.H>
+#include <FL/Fl_Return_Button.H>
+#include <FL/Fl_Button.H>
+#include <FL/fl_ask.H>
 
 using namespace std;
 
@@ -14,15 +25,6 @@ int main() {
     int part_num, command;
     double cost;
     //TODO : Introduce Shop class; Move vector locations -> model class, shop class
-    vector<Torso> torsos;
-    vector<Motor> motors;
-    vector<Arm> arms;
-    vector<Head> heads;
-    vector<Battery> batteries;
-    vector<Robot_models> models;
-    vector<Customer> customers;
-    vector<Sales_associate> associates;
-    vector<Order> orders;
     string path = "data.txt";
     ifstream file;
     file.open(path, ios::in);
@@ -125,7 +127,7 @@ int main() {
             associates.push_back(*s);
         }
     }
-    while(true) {
+    /*while(true) {
 	    cout << "------ Main Menu ------ " << endl;
 	    cout << "(1) Create new parts." << endl;
 	    cout << "(2) Define new models." << endl;
@@ -271,7 +273,16 @@ int main() {
         } else if (command == 0) {
             break;
         }
-    }
+    }*/
+    //Fl_Double_Window* w = create_part();
+    //w->show();
+    //create_part()->show();
+    //w->show();
+    //w->show();
+    //create->show();
+    //Main_menu *menu = new Main_menu;
+    lib->show();
+    //add_head->show();
 
-    return 0;
+    return Fl::run();
 }
