@@ -466,7 +466,9 @@ class Add_model {
         string battery() {return b_battery->value();}
         string motor() {return b_motor->value();}
         void push_model() {
-            Robot_models *m = new Robot_models(atoi(power().c_str()), atoi(energy().c_str()), name(), atoi(part_num().c_str()), description(), atof(cost().c_str()));
+            Robot_models *m = new Robot_models(name(), atoi(part_num().c_str()), atof(cost().c_str()),
+                torsos[atoi(torso().c_str())], motors[atoi(motor().c_str())], arms[atoi(arm().c_str())],
+                batteries[atoi(battery().c_str())], heads[atoi(head().c_str())]);
             models.push_back(*m);
         }
     private:
@@ -546,7 +548,7 @@ void AddBattery(Fl_Widget* w, void* p);
 void AddMotor(Fl_Widget* w, void* p);
 void AddArm(Fl_Widget* w, void* p);
 void AddModel(Fl_Widget* w, void* p);
-void ListPat(Fl_Widget* w, void* p);
+void ListModel(Fl_Widget* w, void* p);
 void Help(Fl_Widget* w, void* p);
 void EE(Fl_Widget* w, void* p);
 /* MENU BAR */
@@ -592,11 +594,15 @@ class Main_menu {
                 add_motor->show();
             } else if(a == 5) {
                 add_arm->show();
-            }else if(a == 6) {
+            } else if(a == 6) {
         	    add_model->show();
-            }/*else if(a == 9) {
-                fl_message(view.get_help().c_str());
-            } else if(a == 99) {
+            } else if(a == 7) {
+                string s = "";
+                for(int i = 0; i < models.size(); i++) {
+                    s += ("(" + to_string(i) + ")\t" + "Name: " + models[i].get_name() + "\tCost: " + to_string(models[i].cost()) + "\n");
+                }
+                fl_message(s.c_str());
+            }/* else if(a == 99) {
 		library.easter_egg();
         }*/
 	}
@@ -614,7 +620,7 @@ class Main_menu {
  		{ 0 },
 		{ "&Models", 0, 0, 0, FL_SUBMENU },
  		{ "&Define Model", 0, (Fl_Callback *)AddModel },
- 		{ "&List Models", 0, (Fl_Callback *)ListPat },
+ 		{ "&List Models", 0, (Fl_Callback *)ListModel },
  		{ 0 },
 		{ "&Other", 0, 0, 0, FL_SUBMENU },
 		{ "&Help", 0, (Fl_Callback *)Help },
@@ -635,7 +641,7 @@ void AddBattery(Fl_Widget* w, void* p) { lib->execute(3);}
 void AddMotor(Fl_Widget* w, void* p) { lib->execute(4);}
 void AddArm(Fl_Widget* w, void* p) { lib->execute(5);}
 void AddModel(Fl_Widget* w, void* p) { lib->execute(6);}
-void ListPat(Fl_Widget* w, void* p) { lib->execute(7);}
+void ListModel(Fl_Widget* w, void* p) { lib->execute(7);}
 void Help(Fl_Widget* w, void* p) { lib->execute(9);}
 void EE(Fl_Widget* w, void* p) { }
 void enter_command(Fl_Widget* w, void* p) {
