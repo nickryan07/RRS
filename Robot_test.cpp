@@ -20,7 +20,149 @@
 
 using namespace std;
 
+void load_data() {
+    string type, name, description;
+    int part_num, command;
+    double cost;
+    //TODO : Introduce Shop class; Move vector locations -> model class, shop class
+    string path = "data.txt";
+    ifstream file;
+    file.open(path, ios::in);
+    string s1;
+    if(file.is_open() != true) {
+        cerr << "### Error opening input file:" << path << "..exiting\n";
+    }
+    while(!file.eof()) {
+        getline(file, s1);
+        //cout << s1 << endl; Helpful to visualize each input block
+        if(s1 == "#Head") {
+            double pow;
+            getline(file, name);
+            file >> part_num;
+            file.ignore();
+            getline(file, description);
+            file >> cost;
+            file.ignore();
+            file >> pow;
+            file.ignore();
+            Head *h = new Head(
+                pow, name, part_num, description, cost);
+            heads.push_back(*h);
+        } else if(s1 == "#Arm") {
+            double apow;
+            getline(file, name);
+            file >> part_num;
+            file.ignore();
+            getline(file, description);
+            file >> cost;
+            file.ignore();
+            file >> apow;
+            file.ignore();
+            Arm *a = new Arm(
+                apow, name, part_num, description, cost);
+            arms.push_back(*a);
+        } else if(s1 == "#Torso") {
+            int slots, arms;
+            getline(file, name);
+            file >> part_num;
+            file.ignore();
+            getline(file, description);
+            file >> cost;
+            file.ignore();
+            file >> slots;
+            file.ignore();
+            file >> arms;
+            file.ignore();
+            Torso *t = new Torso(
+                slots, arms, name, part_num, description, cost);
+            torsos.push_back(*t);
+        } else if(s1 == "#Battery") {
+            double avpow, maxe;
+            getline(file, name);
+            file >> part_num;
+            file.ignore();
+            getline(file, description);
+            file >> cost;
+            file.ignore();
+            file >> avpow;
+            file.ignore();
+            file >> maxe;
+            file.ignore();
+            Battery *b = new Battery(
+                avpow, maxe, name, part_num, description, cost);
+            batteries.push_back(*b);
+        } else if(s1 == "#Motor") {
+            double maxpow;
+            getline(file, name);
+            file >> part_num;
+            file.ignore();
+            getline(file, description);
+            file >> cost;
+            file.ignore();
+            file >> maxpow;
+            file.ignore();
+            Motor *m = new Motor(
+                maxpow, name, part_num, description, cost);
+            motors.push_back(*m);
+        } else if(s1 == "#Customer") {
+            int cnum;
+            string nm, email, phone;
+            getline(file, nm);
+            getline(file, phone);
+            getline(file, email);
+            file >> cnum;
+            file.ignore();
+            Customer *c = new Customer(
+                nm, phone, email, cnum);
+            customers.push_back(*c);
+        } else if(s1 == "#Associate") {
+            int employee_num;
+            string nm;
+            getline(file, nm);
+            file >> employee_num;
+            file.ignore();
+            Sales_associate *s = new Sales_associate(
+                nm, employee_num);
+            associates.push_back(*s);
+        } else if(s1 == "#Model") {
+            int mod_num, t, h, a, m, b;
+            double cost;
+            string name;
+            getline(file, name);
+            file >> mod_num;
+            file.ignore();
+            file >> cost;
+            file.ignore();
+            file >> t;
+            file.ignore();
+            file >> m;
+            file.ignore();
+            file >> a;
+            file.ignore();
+            file >> b;
+            file.ignore();
+            file >> h;
+            file.ignore();
+            Robot_models *mod = new Robot_models(name, mod_num, cost,
+                torsos[t], motors[m], arms[a],
+                batteries[b], heads[h]);
+            models.push_back(*mod);
+        }
+    }
+}
+
 int main() {
+    load_data();
+    lib->show();
+
+    return Fl::run();
+}
+
+
+// ORIGINAL MAIN
+
+
+/*int main() {
     string type, name, description;
     int part_num, command;
     double cost;
@@ -125,8 +267,31 @@ int main() {
             Sales_associate *s = new Sales_associate(
                 nm, employee_num);
             associates.push_back(*s);
+        } else if(s1 == "#Model") {
+            int mod_num, t, h, a, m, b;
+            double cost;
+            string name;
+            getline(file, name);
+            file >> mod_num;
+            file.ignore();
+            file >> cost;
+            file.ignore();
+            file >> t;
+            file.ignore();
+            file >> m;
+            file.ignore();
+            file >> a;
+            file.ignore();
+            file >> b;
+            file.ignore();
+            file >> h;
+            file.ignore();
+            Robot_models *mod = new Robot_models(name, mod_num, cost,
+                torsos[t], motors[m], arms[a],
+                batteries[b], heads[h]);
+            models.push_back(*mod);
         }
-    }
+    }*/
     /*while(true) {
 	    cout << "------ Main Menu ------ " << endl;
 	    cout << "(1) Create new parts." << endl;
@@ -281,8 +446,8 @@ int main() {
     //w->show();
     //create->show();
     //Main_menu *menu = new Main_menu;
-    lib->show();
+//    lib->show();
     //add_head->show();
 
-    return Fl::run();
-}
+    //return Fl::run();
+//}
