@@ -37,10 +37,10 @@ Compatible with all Robo 2000 variants
 24.99
 75
 #Associate
-John Doe
+John Harris
 17
 #Customer
-James Doe
+James Willis
 817-999-9999
 jim1234@something.com
 7
@@ -72,3 +72,10 @@ ROBO 3000
 0
 0
 1
+#Order
+1
+1
+5/1/17
+0
+0
+0

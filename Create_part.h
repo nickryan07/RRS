@@ -555,6 +555,129 @@ void list_motors(Fl_Widget* w, void* p) {
 }
 ////////////////////////////////////////
 
+////////////////////////////////////////
+void enter_order(Fl_Widget* w, void* p);
+void cancel_order(Fl_Widget* w, void* p);
+void list_customers(Fl_Widget* w, void* p);
+void list_associates(Fl_Widget* w, void* p);
+void list_models(Fl_Widget* w, void* p);
+class Add_order {
+    public:
+        Add_order() {
+            dialog_b = new Fl_Window(450,350, "New Order");
+            b_name = new Fl_Input(125, 15, 150, 25, "Order Number: ");
+            b_name->align(FL_ALIGN_LEFT);
+
+            b_part_num = new Fl_Input(125, 55, 150, 25, "Order Status: ");
+            b_part_num->align(FL_ALIGN_LEFT);
+
+            b_cost = new Fl_Input(125, 95, 150, 25, "Order Date: ");
+            b_cost->align(FL_ALIGN_LEFT);
+
+            b_desc = new Fl_Input(125, 135, 150, 25, "Customer #: ");
+            b_desc->align(FL_ALIGN_LEFT);
+
+            b_slots = new Fl_Input(125, 175, 150, 25, "Associate #: ");
+            b_slots->align(FL_ALIGN_LEFT);
+
+            b_arms = new Fl_Input(125, 215, 150, 25, "Model #: ");
+            b_arms->align(FL_ALIGN_LEFT);
+
+            list_c = new Fl_Button(295, 135, 100, 25, "Customer List");
+            list_c->callback((Fl_Callback *)list_customers, 0);
+
+            list_a = new Fl_Button(295, 175, 100, 25, "Associate List");
+            list_a->callback((Fl_Callback *)list_associates, 0);
+
+            list_m = new Fl_Button(295, 215, 100, 25, "Model List");
+            list_m->callback((Fl_Callback *)list_models, 0);
+
+            b_add = new Fl_Return_Button(305, 310, 80, 25, "Add");
+            b_add->callback((Fl_Callback *)enter_order, 0);
+
+            cancel_b = new Fl_Button(385, 310, 60, 25, "Cancel");
+            cancel_b->callback((Fl_Callback *)cancel_order, 0);
+            dialog_b->end();
+            dialog_b->set_non_modal();
+        }
+        void show() {dialog_b->show();}
+        void hide() {dialog_b->hide();}
+        string order_num() {return b_name->value();}
+        string order_state() {return b_part_num->value();}
+        string order_date() {return b_cost->value();}
+        string customer_num() {return b_desc->value();}
+        string associate_num() {return b_slots->value();}
+        string model_num() {return b_arms->value();}
+        void save() {
+            filebuf f;
+            f.open("data.txt", ios::app);
+            ostream ost(&f);
+            ost << "#Order" << endl;
+            ost << atoi(order_num().c_str()) << endl;
+            ost << atoi(order_state().c_str()) << endl;
+            ost << order_date() << endl;
+            ost << atoi(customer_num().c_str()) << endl;
+            ost << atoi(associate_num().c_str()) << endl;
+            ost << atoi(model_num().c_str()) << endl;
+            f.close();
+        }
+        void push_order() {
+            Order *o = new Order(atoi(order_num().c_str()), atoi(order_state().c_str()), order_date(),
+                                 customers[atoi(customer_num().c_str())], associates[atoi(associate_num().c_str())], models[atoi(model_num().c_str())]);
+            orders.push_back(*o);
+            save();
+        }
+    private:
+        Fl_Window *dialog_b;
+        Fl_Input *b_name;
+        Fl_Input *b_part_num;
+        Fl_Input *b_cost;
+        Fl_Input *b_desc;
+	    Fl_Input *b_slots;
+        Fl_Input *b_arms;
+        Fl_Button *list_c;
+        Fl_Button *list_a;
+        Fl_Button *list_m;
+        Fl_Return_Button *b_add;
+        Fl_Button *cancel_b;
+        Fl_Text_Buffer *m1_buffer;
+        Fl_Text_Display *m1_text;
+	    Fl_Text_Buffer *m2_buffer;
+        Fl_Text_Display *m2_text;
+        Fl_Text_Buffer *m3_buffer;
+        Fl_Text_Display *m3_text;
+};
+Add_order *add_order = new Add_order;
+void enter_order(Fl_Widget* w, void* p) {
+        add_order->push_order();
+        add_order->hide();
+}
+void cancel_order(Fl_Widget* w, void* p) {
+    add_order->hide();
+}
+void list_customers(Fl_Widget* w, void* p) {
+    string s = "";
+    for(int i = 0; i < customers.size(); i++) {
+        s += ("(" + to_string(i) + ")\t" + "Name: " + customers[i].get_name() + "\n");
+    }
+    fl_message(s.c_str());
+}
+void list_associates(Fl_Widget* w, void* p) {
+    string s = "";
+    for(int i = 0; i < associates.size(); i++) {
+        s += ("(" + to_string(i) + ")\t" + "Name: " + associates[i].get_name() + "\n");
+    }
+    fl_message(s.c_str());
+}
+void list_models(Fl_Widget* w, void* p) {
+    string s = "";
+    for(int i = 0; i < models.size(); i++) {
+        s += ("(" + to_string(i) + ")\t" + "Name: " + models[i].get_name() + "\n");
+    }
+    fl_message(s.c_str());
+}
+////////////////////////////////////////
+
 /* MENU BAR */
 Fl_Menu_Bar *menubar;
 void AddHead(Fl_Widget* w, void* p);
@@ -564,7 +687,9 @@ void AddMotor(Fl_Widget* w, void* p);
 void AddArm(Fl_Widget* w, void* p);
 void AddModel(Fl_Widget* w, void* p);
 void ListModel(Fl_Widget* w, void* p);
-void Help(Fl_Widget* w, void* p);
+void AddOrder(Fl_Widget* w, void* p);
+void ListOrder(Fl_Widget* w, void* p);
+void ManageOrder(Fl_Widget* w, void* p);
 void EE(Fl_Widget* w, void* p);
 /* MENU BAR */
 void enter_command(Fl_Widget* w, void* p);
@@ -581,12 +706,6 @@ class Main_menu {
             m_text = new Fl_Text_Display(10, 45, 380, 450);
             m_text->buffer(m_buffer);
             m_buffer->text(s.c_str());
-
-            //m_command = new Fl_Input(100, 480, 270, 25, "Command: ");
-            //m_command->align(FL_ALIGN_LEFT);
-
-            //m_create = new Fl_Return_Button(255, 510, 80, 25, "Ok");
-            //m_create->callback((Fl_Callback *)enter_command, 0);
 
             m_cancel = new Fl_Button(335, 510, 60, 25, "Close");
             m_cancel->callback((Fl_Callback *)cancel_command, 0);
@@ -617,12 +736,18 @@ class Main_menu {
                     s += ("(" + to_string(i) + ")\t" + "Name: " + models[i].get_name() + "\tCost: " + to_string(models[i].cost()) + "\n\n");
                 }
                 fl_message(s.c_str());
-            }/* else if(a == 99) {
-		library.easter_egg();
-        }*/
+            } else if(a == 8) {
+		        add_order->show();
+            } else if(a == 9) {
+                string s = "";
+                for(int i = 0; i < orders.size(); i++) {
+                    s += ("(" + to_string(i) + ")\t" + "Order #: " + to_string(orders[i].get_number()) + "\tCustomer: " + orders[i].get_name() + "\tStatus: " + to_string(orders[i].get_status()) + "\tDate: " + orders[i].get_date() + "\n\n");
+                }
+                fl_message(s.c_str());
+            }
 	}
     private:
-	Fl_Menu_Item menuitems[18] = {
+	Fl_Menu_Item menuitems[20] = {
 		{ "&File", 0, 0, 0, FL_SUBMENU },
  		{ "&Quit", FL_ALT + 'q', (Fl_Callback *)cancel_command },
  		{ 0 },
@@ -637,8 +762,10 @@ class Main_menu {
  		{ "&Define Model", 0, (Fl_Callback *)AddModel },
  		{ "&Browse Models", 0, (Fl_Callback *)ListModel },
  		{ 0 },
-		{ "&Other", 0, 0, 0, FL_SUBMENU },
-		{ "&Help", 0, (Fl_Callback *)Help },
+		{ "&Orders", 0, 0, 0, FL_SUBMENU },
+		{ "&New Order", 0, (Fl_Callback *)AddOrder },
+        { "&List Orders", 0, (Fl_Callback *)ListOrder },
+        { "&Manage Order", 0, (Fl_Callback *)ManageOrder },
  		{ 0 }
 	};
         Fl_Window *dialog;
@@ -657,7 +784,9 @@ void AddMotor(Fl_Widget* w, void* p) { lib->execute(4);}
 void AddArm(Fl_Widget* w, void* p) { lib->execute(5);}
 void AddModel(Fl_Widget* w, void* p) { lib->execute(6);}
 void ListModel(Fl_Widget* w, void* p) { lib->execute(7);}
-void Help(Fl_Widget* w, void* p) { lib->execute(9);}
+void AddOrder(Fl_Widget* w, void* p) { lib->execute(8);}
+void ListOrder(Fl_Widget* w, void* p) { lib->execute(9);}
+void ManageOrder(Fl_Widget* w, void* p) { lib->execute(10);}
 void EE(Fl_Widget* w, void* p) { }
 void enter_command(Fl_Widget* w, void* p) {
     try {

@@ -147,6 +147,23 @@ void load_data() {
                 torsos[t], motors[m], arms[a],
                 batteries[b], heads[h]);
             models.push_back(*mod);
+        } else if(s1 == "#Order") {
+            int order_num, status, customer, associate, model;
+            string date;
+            file >> order_num;
+            file.ignore();
+            file >> status;
+            file.ignore();
+            getline(file, date);
+            file >> customer;
+            file.ignore();
+            file >> associate;
+            file.ignore();
+            file >> model;
+            file.ignore();
+            Order *o = new Order(
+                order_num, status, date, customers[customer], associates[associate], models[model]);
+            orders.push_back(*o);
         }
     }
 }

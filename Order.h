@@ -20,18 +20,20 @@ public:
         //TODO
     }
 
-    void save() {
-        /*filebuf f;
-        f.open("data.txt", ios::app);
-        ostream ost(&f);
-        ost << "#Order" << endl;
-        ost << order_number << endl;
-        ost << status << endl;
-        ost << date << endl;
-        ost << cost << endl;
-        ost << max_power << endl;
-        f.close();*/
-        //TODO
+    int get_number() {
+        return order_number;
+    }
+
+    int get_status() {
+        return status;
+    }
+
+    string get_date() {
+        return date;
+    }
+
+    string get_name() {
+        return customer.get_name();
     }
 
 private:
