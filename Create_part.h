@@ -12,23 +12,22 @@
 #include <FL/Fl_Input_Choice.H>
 #include <FL/fl_ask.H>
 
-//Fl_Double_Window* create_part();
 using namespace std;
 ////////////////////////////////////////
 string menu = R"(
------- Main Menu ------
+------------------------- Main Menu -------------------------
 
-//TODO
+- You may use the menu bar to create new parts
+and define new robot models.
 
-(1) Create new parts.
-(2) Define new models.
-(3) Browse existing models.
-(4) Add a new Customer.
-(5) Add a new Sales Associate.
-(6) Create a new order.
-(7) List current Customers.
-(8) List current Sales Associates.
-(0) Quit.
+
+
+- Customers may view a list of defined models.
+
+
+NOTE: Please see the instruction manual
+for more detail.
+
 )";
 vector<Torso> torsos;
 vector<Motor> motors;
@@ -81,6 +80,7 @@ class Add_arm {
         void push_arm() {
             Arm *a = new Arm(atof(power().c_str()), name(), atoi(part_num().c_str()), description(), atof(cost().c_str()));
             arms.push_back(*a);
+            a->save();
         }
     private:
         Fl_Window *dialog_b;
@@ -149,6 +149,7 @@ class Add_motor {
         void push_motor() {
             Motor *m = new Motor(atof(power().c_str()), name(), atoi(part_num().c_str()), description(), atof(cost().c_str()));
             motors.push_back(*m);
+            m->save();
         }
     private:
         Fl_Window *dialog_b;
@@ -221,6 +222,7 @@ class Add_battery {
         void push_battery() {
             Battery *b = new Battery(atoi(power().c_str()), atoi(energy().c_str()), name(), atoi(part_num().c_str()), description(), atof(cost().c_str()));
             batteries.push_back(*b);
+            b->save();
         }
     private:
         Fl_Window *dialog_b;
@@ -294,6 +296,7 @@ class Add_torso {
         void push_torso() {
             Torso *t = new Torso(atoi(slots().c_str()), atoi(arms().c_str()), name(), atoi(part_num().c_str()), description(), atof(cost().c_str()));
             torsos.push_back(*t);
+            t->save();
         }
     private:
         Fl_Window *dialog_b;
@@ -360,8 +363,10 @@ class Add_head {
         string cost() {return b_cost->value();}
         string description() {return b_desc->value();}
         string power() {return b_power->value();}
-        void push_head() {Head *h = new Head(atof(power().c_str()), name(), atoi(part_num().c_str()), description(), atof(cost().c_str()));
+        void push_head() {
+            Head *h = new Head(atof(power().c_str()), name(), atoi(part_num().c_str()), description(), atof(cost().c_str()));
             heads.push_back(*h);
+            h->save();
         }
     private:
         Fl_Window *dialog_b;
@@ -439,13 +444,6 @@ class Add_model {
 
             list_motor = new Fl_Button(295, 295, 100, 25, "List Motors");
             list_motor->callback((Fl_Callback *)list_motors, 0);
-            //b_torso->align(FL_ALIGN_LEFT);
-
-            /*b_power = new Fl_Input(125, 175, 150, 25, "Available power: ");
-            b_power->align(FL_ALIGN_LEFT);
-
-            b_energy = new Fl_Input(125, 215, 150, 25, "Max Energy: ");
-            b_energy->align(FL_ALIGN_LEFT);*/
 
             b_add = new Fl_Return_Button(305, 325, 80, 25, "Add");
             b_add->callback((Fl_Callback *)enter_model, 0);
@@ -457,6 +455,7 @@ class Add_model {
         }
         void show() {dialog_b->show();}
         void hide() {dialog_b->hide();}
+
         string name() {return b_name->value();}
         string part_num() {return b_part_num->value();}
         string cost() {return b_cost->value();}
@@ -465,11 +464,27 @@ class Add_model {
         string arm() {return b_arm->value();}
         string battery() {return b_battery->value();}
         string motor() {return b_motor->value();}
+        void save() {
+            filebuf f;
+            f.open("data.txt", ios::app);
+            ostream ost(&f);
+            ost << "#Model" << endl;
+            ost << name() << endl;
+            ost << atoi(part_num().c_str()) << endl;
+            ost << atof(cost().c_str()) << endl;
+            ost << atoi(torso().c_str()) << endl;
+            ost << atoi(motor().c_str()) << endl;
+            ost << atoi(arm().c_str()) << endl;
+            ost << atoi(battery().c_str()) << endl;
+            ost << atoi(head().c_str()) << endl;
+            f.close();
+        }
         void push_model() {
             Robot_models *m = new Robot_models(name(), atoi(part_num().c_str()), atof(cost().c_str()),
                 torsos[atoi(torso().c_str())], motors[atoi(motor().c_str())], arms[atoi(arm().c_str())],
                 batteries[atoi(battery().c_str())], heads[atoi(head().c_str())]);
             models.push_back(*m);
+            save();
         }
     private:
         Fl_Window *dialog_b;
@@ -599,7 +614,7 @@ class Main_menu {
             } else if(a == 7) {
                 string s = "";
                 for(int i = 0; i < models.size(); i++) {
-                    s += ("(" + to_string(i) + ")\t" + "Name: " + models[i].get_name() + "\tCost: " + to_string(models[i].cost()) + "\n");
+                    s += ("(" + to_string(i) + ")\t" + "Name: " + models[i].get_name() + "\tCost: " + to_string(models[i].cost()) + "\n\n");
                 }
                 fl_message(s.c_str());
             }/* else if(a == 99) {
@@ -620,7 +635,7 @@ class Main_menu {
  		{ 0 },
 		{ "&Models", 0, 0, 0, FL_SUBMENU },
  		{ "&Define Model", 0, (Fl_Callback *)AddModel },
- 		{ "&List Models", 0, (Fl_Callback *)ListModel },
+ 		{ "&Browse Models", 0, (Fl_Callback *)ListModel },
  		{ 0 },
 		{ "&Other", 0, 0, 0, FL_SUBMENU },
 		{ "&Help", 0, (Fl_Callback *)Help },

@@ -47,3 +47,28 @@ jim1234@something.com
 #Associate
 Jane Doe
 21
+#Torso
+Torso 3000
+344
+Torso 3000 variant
+27
+2
+2
+#Model
+Robo 2000
+2
+134.99
+0
+0
+0
+0
+1
+#Model
+ROBO 3000
+555
+279.99
+1
+0
+0
+0
+1
