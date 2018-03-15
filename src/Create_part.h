@@ -177,6 +177,122 @@ void cancel_motor(Fl_Widget* w, void* p) {
 }
 ////////////////////////////////////////
 
+////////////////////////////////////////
+void enter_customer(Fl_Widget* w, void* p);
+void cancel_customer(Fl_Widget* w, void* p);
+class Add_customer {
+    public:
+        Add_customer() {
+            dialog_b = new Fl_Window(450,350, "Add Customer");
+            b_name = new Fl_Input(125, 15, 150, 25, "Name: ");
+            b_name->align(FL_ALIGN_LEFT);
+
+            b_part_num = new Fl_Input(125, 55, 150, 25, "Phone Number: ");
+            b_part_num->align(FL_ALIGN_LEFT);
+
+            b_cost = new Fl_Input(125, 95, 150, 25, "Email: ");
+            b_cost->align(FL_ALIGN_LEFT);
+
+            b_desc = new Fl_Input(125, 135, 150, 25, "Customer #: ");
+            b_desc->align(FL_ALIGN_LEFT);
+
+            b_add = new Fl_Return_Button(305, 310, 80, 25, "Add");
+            b_add->callback((Fl_Callback *)enter_customer, 0);
+
+            cancel_b = new Fl_Button(385, 310, 60, 25, "Cancel");
+            cancel_b->callback((Fl_Callback *)cancel_customer, 0);
+            dialog_b->end();
+            dialog_b->set_non_modal();
+        }
+        void show() {dialog_b->show();}
+        void hide() {dialog_b->hide();}
+        string name() {return b_name->value();}
+        string phone_num() {return b_part_num->value();}
+        string email() {return b_cost->value();}
+        string customer_num() {return b_desc->value();}
+        void push_motor() {
+            Customer *c = new Customer(name(), phone_num(), email(), atoi(customer_num().c_str()));
+            customers.push_back(*c);
+            c->save();
+        }
+    private:
+        Fl_Window *dialog_b;
+        Fl_Input *b_name;
+        Fl_Input *b_part_num;
+        Fl_Input *b_cost;
+        Fl_Input *b_desc;
+        Fl_Return_Button *b_add;
+        Fl_Button *cancel_b;
+        Fl_Text_Buffer *m1_buffer;
+        Fl_Text_Display *m1_text;
+	    Fl_Text_Buffer *m2_buffer;
+        Fl_Text_Display *m2_text;
+        Fl_Text_Buffer *m3_buffer;
+        Fl_Text_Display *m3_text;
+};
+Add_customer *add_customer = new Add_customer;
+void enter_customer(Fl_Widget* w, void* p) {
+        add_customer->push_motor();
+        add_customer->hide();
+}
+void cancel_customer(Fl_Widget* w, void* p) {
+    add_customer->hide();
+}
+////////////////////////////////////////
+
+////////////////////////////////////////
+void enter_associate(Fl_Widget* w, void* p);
+void cancel_associate(Fl_Widget* w, void* p);
+class Add_associate {
+    public:
+        Add_associate() {
+            dialog_b = new Fl_Window(450,150, "Add Associate");
+            b_name = new Fl_Input(125, 15, 150, 25, "Name: ");
+            b_name->align(FL_ALIGN_LEFT);
+
+            b_part_num = new Fl_Input(125, 55, 150, 25, "Employee #: ");
+            b_part_num->align(FL_ALIGN_LEFT);
+
+            b_add = new Fl_Return_Button(305, 110, 80, 25, "Add");
+            b_add->callback((Fl_Callback *)enter_associate, 0);
+
+            cancel_b = new Fl_Button(385, 110, 60, 25, "Cancel");
+            cancel_b->callback((Fl_Callback *)cancel_associate, 0);
+            dialog_b->end();
+            dialog_b->set_non_modal();
+        }
+        void show() {dialog_b->show();}
+        void hide() {dialog_b->hide();}
+        string name() {return b_name->value();}
+        string associate_num() {return b_part_num->value();}
+        void push_motor() {
+            Sales_associate *assoc = new Sales_associate(name(), atoi(associate_num().c_str()));
+            associates.push_back(*assoc);
+            assoc->save();
+        }
+    private:
+        Fl_Window *dialog_b;
+        Fl_Input *b_name;
+        Fl_Input *b_part_num;
+        Fl_Return_Button *b_add;
+        Fl_Button *cancel_b;
+        Fl_Text_Buffer *m1_buffer;
+        Fl_Text_Display *m1_text;
+	    Fl_Text_Buffer *m2_buffer;
+        Fl_Text_Display *m2_text;
+        Fl_Text_Buffer *m3_buffer;
+        Fl_Text_Display *m3_text;
+};
+Add_associate *add_associate = new Add_associate;
+void enter_associate(Fl_Widget* w, void* p) {
+        add_associate->push_motor();
+        add_associate->hide();
+}
+void cancel_associate(Fl_Widget* w, void* p) {
+    add_associate->hide();
+}
+////////////////////////////////////////
+
 
 ////////////////////////////////////////
 void enter_battery(Fl_Widget* w, void* p);
@@ -690,6 +806,8 @@ void ListModel(Fl_Widget* w, void* p);
 void AddOrder(Fl_Widget* w, void* p);
 void ListOrder(Fl_Widget* w, void* p);
 void ManageOrder(Fl_Widget* w, void* p);
+void AddCustomer(Fl_Widget* w, void* p);
+void AddAssociate(Fl_Widget* w, void* p);
 void EE(Fl_Widget* w, void* p);
 /* MENU BAR */
 void enter_command(Fl_Widget* w, void* p);
@@ -744,10 +862,14 @@ class Main_menu {
                     s += ("(" + to_string(i) + ")\t" + "Order #: " + to_string(orders[i].get_number()) + "\tCustomer: " + orders[i].get_name() + "\tStatus: " + to_string(orders[i].get_status()) + "\tDate: " + orders[i].get_date() + "\n\n");
                 }
                 fl_message(s.c_str());
+            } else if(a == 11) {
+		        add_customer->show();
+            } else if(a == 12) {
+		        add_associate->show();
             }
 	}
     private:
-	Fl_Menu_Item menuitems[20] = {
+	Fl_Menu_Item menuitems[24] = {
 		{ "&File", 0, 0, 0, FL_SUBMENU },
  		{ "&Quit", FL_ALT + 'q', (Fl_Callback *)cancel_command },
  		{ 0 },
@@ -766,6 +888,10 @@ class Main_menu {
 		{ "&New Order", 0, (Fl_Callback *)AddOrder },
         { "&List Orders", 0, (Fl_Callback *)ListOrder },
         { "&Manage Order", 0, (Fl_Callback *)ManageOrder },
+ 		{ 0 },
+        { "&Users", 0, 0, 0, FL_SUBMENU },
+		{ "&New Customer", 0, (Fl_Callback *)AddCustomer },
+        { "&New Associate", 0, (Fl_Callback *)AddAssociate },
  		{ 0 }
 	};
         Fl_Window *dialog;
@@ -787,6 +913,8 @@ void ListModel(Fl_Widget* w, void* p) { lib->execute(7);}
 void AddOrder(Fl_Widget* w, void* p) { lib->execute(8);}
 void ListOrder(Fl_Widget* w, void* p) { lib->execute(9);}
 void ManageOrder(Fl_Widget* w, void* p) { lib->execute(10);}
+void AddCustomer(Fl_Widget* w, void* p) { lib->execute(11);}
+void AddAssociate(Fl_Widget* w, void* p) { lib->execute(12);}
 void EE(Fl_Widget* w, void* p) { }
 void enter_command(Fl_Widget* w, void* p) {
     try {

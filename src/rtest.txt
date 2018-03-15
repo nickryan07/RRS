@@ -1,0 +1,122 @@
+------ Main Menu ------
+(1) Create new parts.
+(2) Define new models.
+(3) Browse existing models.
+(4) Add a new Customer.
+(5) Add a new Sales Associate.
+(6) Create a new order.
+(7) List current Customers.
+(8) List current Sales Associates.
+(0) Quit.
+Enter command: 0
+------ LIST OF PARTS ------
+
+--- Torsos ---
+(0)	Name: Torso 2000	Cost: 29
+
+--- Heads ---
+(0)	Name: Blue Robo 2000	Cost: 35.99
+(1)	Name: Red Robo 2000	Cost: 34.44
+
+--- Arms ---
+(0)	Name: Robo 2000 Arm	Cost: 12.99
+
+--- Motors ---
+(0)	Name: Robo 2000 Motor	Cost: 24.99
+
+--- Batteries ---
+(0)	Name: DC 145 Battery	Cost: 2.49
+
+------ Creating a Robot Model ------
+
+
+Enter a model name: ROBO 2000
+Enter a model number (int): 77
+Enter the model's price (double): 124.99
+Enter the index number of the torso you wish to use (int): 0
+Enter the index number of the motor you wish to use (int): 0
+Enter the index number of the arm(s) you wish to use (int): 0
+Enter the index number of the battery you wish to use (int): 0
+Enter the index number of the head you wish to use (int): 0
+------ Main Menu ------
+(1) Create new parts.
+(2) Define new models.
+(3) Browse existing models.
+(4) Add a new Customer.
+(5) Add a new Sales Associate.
+(6) Create a new order.
+(7) List current Customers.
+(8) List current Sales Associates.
+(0) Quit.
+Enter command: 3
+--------- MODELS ---------
+
+(0)	Name: ROBO 2000	Price: 124.99
+
+--------- MODELS ---------
+
+------ Main Menu ------
+(1) Create new parts.
+(2) Define new models.
+(3) Browse existing models.
+(4) Add a new Customer.
+(5) Add a new Sales Associate.
+(6) Create a new order.
+(7) List current Customers.
+(8) List current Sales Associates.
+(0) Quit.
+Enter command: 5
+------ Adding a new Sales Associate ------
+
+
+Enter the employee's name: Jane Doe
+Enter the employee number: 21
+------ Successfully created a new Sales Associate ------
+
+
+------ Main Menu ------
+(1) Create new parts.
+(2) Define new models.
+(3) Browse existing models.
+(4) Add a new Customer.
+(5) Add a new Sales Associate.
+(6) Create a new order.
+(7) List current Customers.
+(8) List current Sales Associates.
+(0) Quit.
+Enter command:7
+--------- CUSTOMERS ---------
+
+(0)	Name: James Doe
+
+--------- CUSTOMERS ---------
+
+------ Main Menu ------
+(1) Create new parts.
+(2) Define new models.
+(3) Browse existing models.
+(4) Add a new Customer.
+(5) Add a new Sales Associate.
+(6) Create a new order.
+(7) List current Customers.
+(8) List current Sales Associates.
+(0) Quit.
+Enter command:8
+--------- SALES ASSOCIATES ---------
+
+(0)	Name: John Doe	Employee Number: 17
+(1)	Name: Jane Doe	Employee Number: 21
+
+--------- SALES ASSOCIATES ---------
+
+------ Main Menu ------
+(1) Create new parts.
+(2) Define new models.
+(3) Browse existing models.
+(4) Add a new Customer.
+(5) Add a new Sales Associate.
+(6) Create a new order.
+(7) List current Customers.
+(8) List current Sales Associates.
+(0) Quit.
+Enter command: 0

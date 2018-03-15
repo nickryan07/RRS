@@ -79,3 +79,11 @@ ROBO 3000
 0
 0
 0
+#Customer
+Richard Martin
+143-111-4442
+rickmartn@something.com
+23
+#Associate
+Nick Ryan
+22
